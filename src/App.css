@@ -1,5 +1,5 @@
 .App {
-  text-align: center;
+  text-align: left;
 }
 
 @font-face {
@@ -9,4 +9,13 @@
 }
 .my-font {
   font-family: "MyFont", sans-serif;
+}
+.issues {
+  border: 1px solid black;
+}
+.issueList .issues {
+  list-style: none;
+}
+.issueList .issueState {
+  justify-content: right;
 }
