@@ -1,0 +1,12 @@
+.App {
+  text-align: center;
+}
+
+@font-face {
+  font-family: "MyFont";
+  src: url("./fonts/Helvetica-Neue-Font/Helvetica\ Neue\ UltraLight/Helvetica Neue UltraLight.ttf")
+    format("ttf");
+}
+.my-font {
+  font-family: "MyFont", sans-serif;
+}
