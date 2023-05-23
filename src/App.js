@@ -1,11 +1,47 @@
 import "./App.css";
-import IssuesPage from "./components/Home";
+import Details from "./components/details";
+import IssuesPage from "./components/main";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Route,
+  Outlet,
+} from "react-router-dom";
+
+const Layout = () => {
+  return (
+    <>
+      <Outlet />
+    </>
+  );
+};
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Layout />,
+    children: [
+      {
+        path: "/",
+        element: <IssuesPage />,
+      },
+    ],
+  },
+  {
+    path: "/issues/:id",
+    element: <Details />,
+  },
+
+  {
+    path: "*",
+    element: <div>Page does not exist</div>,
+  },
+]);
 
 function App() {
   return (
     <div className="App">
-      <p className="my-font">hello</p>
-      <IssuesPage />
+      <RouterProvider router={router} />
     </div>
   );
 }
