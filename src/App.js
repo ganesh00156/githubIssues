@@ -1,12 +1,7 @@
 import "./App.css";
 import Details from "./components/details";
 import IssuesPage from "./components/main";
-import {
-  createBrowserRouter,
-  RouterProvider,
-  Route,
-  Outlet,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 
 const Layout = () => {
   return (

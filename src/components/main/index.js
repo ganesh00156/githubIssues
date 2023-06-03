@@ -1,49 +1,20 @@
-import "../../components/main/style.css";
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useState } from "react";
 import { Icon } from "@iconify/react";
 import moment from "moment/moment";
 import { Link } from "react-router-dom";
 import { css } from "@emotion/react";
 import { BeatLoader } from "react-spinners";
+import Pagination from "./Pagination";
+import useFetchIssues from "../../hook/useFetchIssues";
 
 const GitHubIssuesPage = () => {
-  const [issues, setIssues] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const perPage = 10;
 
-  const perPage = 5; // Number of issues per page
+  const { issues, loading, error } = useFetchIssues();
   const totalPages = Math.ceil(issues.length / perPage);
   const startIndex = (currentPage - 1) * perPage;
   const endIndex = startIndex + perPage;
-
-  useEffect(() => {
-    const company = "facebook";
-    const repo = "react";
-    const fetchIssues = async () => {
-      try {
-        const response = await axios.get(
-          `https://api.github.com/repos/${company}/${repo}/issues`,
-          {
-            params: {
-              state: "open",
-              per_page: 60, // Fetch a larger number of issues for pagination
-            },
-          }
-        );
-        setIssues(response.data);
-
-        setLoading(false);
-        console.log(issues);
-      } catch (error) {
-        setError(error.message);
-        setLoading(false);
-      }
-    };
-
-    fetchIssues();
-  }, []);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -70,40 +41,46 @@ const GitHubIssuesPage = () => {
     return <div>Error: {error}</div>;
   }
 
-  //Number of buttons
-  const maxButtons = 5;
-  let startButton = Math.max(1, currentPage - Math.floor(maxButtons / 2));
-  let endButton = Math.min(startButton + maxButtons - 1, totalPages);
-  startButton = Math.max(1, endButton - maxButtons + 1);
-
   return (
-    <div className="issueList">
-      <div>
-        <ul className="issueUl">
+    <div className="flex justify-center mt-3 lg:ml-12 lg:mr-12">
+      <div className="w-full px-128 ml-8 mr-8">
+        <ul className="border-t border-l border-r rounded-tl-lg border-gray-200 rounded-tr-lg">
+          <li className="issues border-b border-gray-200 pt-2 pb-2 pl-2 ">
+            <Icon
+              icon="octicon:issue-opened-16"
+              color="#3fb950"
+              className="mr-1 mt-1 mb-1 inline-flex"
+              style={{ width: 16, height: 16, alignItems: "center" }}
+            />
+            <span>{issues.length} ++</span>
+          </li>
           {issues.slice(startIndex, endIndex).map((issue) => {
             const { title, created_at, user } = issue;
             const currentTime = moment();
             const formattedDate = moment(created_at).from(currentTime);
 
             return (
-              <li className="issues" key={issue.id}>
-                <p>
+              <li
+                className="issues border-b border-gray-200 pt-2 pb-2 pl-2 "
+                key={issue.id}
+              >
+                <p className="flex items-center flex-wrap sm:inline-flex">
                   <Icon
+                    className="lg:mr-4"
                     icon="octicon:issue-opened-16"
                     color="#3fb950"
                     style={{ width: 16, height: 16, alignItems: "center" }}
                   />
-                  <span> </span>
-                  <Link className="issueLink" to={`/issues/${issue.number}`}>
+                  {/* <span className="mx-1"></span> */}
+                  <Link className="" to={`/issues/${issue.number}`}>
                     {title}
                   </Link>
                   {issue.labels.map((label) => (
                     <span
-                      className="statusIssue"
+                      className="ml-2 rounded-lg font-thin pl-1 pr-1 text-sm"
                       key={label.id}
                       style={{
                         backgroundColor: `#${label.color}`,
-
                         color:
                           label.color === "9149d1" || label.color === "b60205"
                             ? "white"
@@ -116,7 +93,7 @@ const GitHubIssuesPage = () => {
                   ))}
                 </p>
 
-                <p className="issueNumber">
+                <p className="issueNumber lg:pl-7">
                   #{issue.number} opened {formattedDate} by {user.login}
                 </p>
               </li>
@@ -124,33 +101,11 @@ const GitHubIssuesPage = () => {
           })}
         </ul>
 
-        <div className="pagination">
-          <button
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-          >
-            {"<<"}
-          </button>
-          {Array.from(
-            { length: endButton - startButton + 1 },
-            (_, index) => startButton + index
-          ).map((page) => (
-            <button
-              key={page}
-              onClick={() => handlePageChange(page)}
-              disabled={currentPage === page}
-              className={currentPage === page ? "active" : ""}
-            >
-              {page}
-            </button>
-          ))}
-          <button
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === totalPages}
-          >
-            {">>"}
-          </button>
-        </div>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          handlePageChange={handlePageChange}
+        />
       </div>
     </div>
   );
