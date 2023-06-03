@@ -1,4 +1,10 @@
 .App {
-  text-align: left;
+  /* text-align: left; */
   font-family: "Poppins", sans-serif;
+}
+
+@media (min-width: 1279px) {
+  .icontainer {
+    max-width: 1216px;
+  }
 }

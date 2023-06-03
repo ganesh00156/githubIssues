@@ -36,6 +36,7 @@ const Details = () => {
     };
 
     fetchIssues();
+    // eslint-disable-next-line
   }, []);
 
   const { created_at } = issue;
@@ -63,68 +64,49 @@ const Details = () => {
     return <div>Error: {error}</div>;
   }
   return (
-    <>
-      <h1 className="heading">
-        {issue.title}
-        <span className="issueNumber">#{issue.number}</span>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            marginLeft: "33%",
-            marginTop: "10px",
-          }}
-        >
-          <Icon
-            icon="octicon:issue-opened-16"
-            color="white"
-            style={{
-              backgroundColor: "#3fb950",
-              width: 20,
-              height: 20,
-              padding: "4px",
-              borderRadius: "50px 0 0 50px",
-            }}
-          />
-          <span
-            style={{
-              backgroundColor: "#3fb950",
-              color: "white",
-              padding: "4px",
-              marginLeft: "-1px",
-              borderRadius: "0 50px 50px 0",
-              fontSize: "17px",
-            }}
-          >
-            Open
-          </span>
-          <span
-            style={{
-              fontSize: "14px",
-              paddingLeft: "10px",
-            }}
-          >
-            {issue.user.login} opened this issue {formattedDate}
-          </span>
-        </div>
-      </h1>
-
-      <div className="issueDetails">
-        <div className="sectionOne">
-          <div className="avatarContainer">
-            <img
-              className="userAvatar"
-              src={issue.user.avatar_url}
-              alt={issue.user.login}
-            />
-          </div>
-          <div className="issueInfo">
-            <div className="subHeading">{issue.user.login}</div>
-            <FormattedTextComponent body={issue.body} />
+    <div className="container">
+      <div>
+        <div className="flex justify-center mt-3 lg:ml-12 lg:mr-12">
+          <div className=" p-4 w-full lg:w-3/4">
+            <h1 className="text-left mt-1 mb-4 text-lg font-bold pb-3 border-b border-gray-300">
+              {issue.title}
+              <span className="text-gray-500 pl-2">#{issue.number}</span>
+              <div className="flex items-center ml-1 mt-2">
+                <Icon
+                  icon="octicon:issue-opened-16"
+                  color="white"
+                  style={{
+                    backgroundColor: "#3fb950",
+                    width: 20,
+                    height: 20,
+                    borderRadius: 50,
+                  }}
+                />
+                <span className="ml-1">Open</span>
+                <span className="text-sm ml-2 text-gray-600">
+                  {issue.user.login} opened this issue {formattedDate}
+                </span>
+              </div>
+            </h1>
+            <div className="flex">
+              <div className="h-12 w-12 ml-2 mr-3 rounded-full overflow-hidden">
+                <img
+                  className="h-auto w-full object-cover"
+                  src={issue.user.avatar_url}
+                  alt={issue.user.login}
+                />
+              </div>
+              <div className="flex-grow border border-gray-300 rounded-lg p-4 w-full lg:w-3/4">
+                <div className="text-xl w-full font-bold lg:border-b-2 pt-2 pb-2 ">
+                  {issue.user.login}
+                </div>
+                <FormattedTextComponent body={issue.body} />
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

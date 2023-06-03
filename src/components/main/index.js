@@ -43,16 +43,16 @@ const GitHubIssuesPage = () => {
 
   return (
     <div className="flex justify-center mt-3 lg:ml-12 lg:mr-12">
-      <div className="w-full px-128 ml-8 mr-8">
+      <div className="icontainer w-full px-128 ml-8 mr-8">
         <ul className="border-t border-l border-r rounded-tl-lg border-gray-200 rounded-tr-lg">
-          <li className="issues border-b border-gray-200 pt-2 pb-2 pl-2 ">
+          <li className="issues border-b border-gray-200 pt-2 pb-2 pl-2 bg-gray-100 rounded-tr-lg rounded-tl-lg">
             <Icon
               icon="octicon:issue-opened-16"
               color="#3fb950"
-              className="mr-1 mt-1 mb-1 inline-flex"
+              className="mr-4 mt-1 mb-1 inline-flex"
               style={{ width: 16, height: 16, alignItems: "center" }}
             />
-            <span>{issues.length} ++</span>
+            <span>Open Issues</span>
           </li>
           {issues.slice(startIndex, endIndex).map((issue) => {
             const { title, created_at, user } = issue;
@@ -72,9 +72,9 @@ const GitHubIssuesPage = () => {
                     style={{ width: 16, height: 16, alignItems: "center" }}
                   />
                   {/* <span className="mx-1"></span> */}
-                  <Link className="" to={`/issues/${issue.number}`}>
-                    {title}
-                  </Link>
+                  <span className="hover:text-blue-700">
+                    <Link to={`/issues/${issue.number}`}>{title}</Link>
+                  </span>
                   {issue.labels.map((label) => (
                     <span
                       className="ml-2 rounded-lg font-thin pl-1 pr-1 text-sm"
@@ -93,7 +93,7 @@ const GitHubIssuesPage = () => {
                   ))}
                 </p>
 
-                <p className="issueNumber lg:pl-7">
+                <p className="issueNumber lg:pl-7 text-gray-500">
                   #{issue.number} opened {formattedDate} by {user.login}
                 </p>
               </li>
