@@ -1,63 +1,24 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import "../../components/details/style.css";
 import FormattedTextComponent from "./format";
 import { Icon } from "@iconify/react";
-import { css } from "@emotion/react";
-import { BarLoader } from "react-spinners";
 import moment from "moment/moment";
+import useFetchIssue from "../../hook/useFetchIssue";
+import Spinner from "../spinner.js/issueSpinner";
 
 const Details = () => {
   const location = useLocation();
   const issueId = location.pathname.split("/")[2];
   console.log(issueId);
 
-  const [issue, setIssue] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const company = "facebook";
-    const repo = "react";
-    const fetchIssues = async () => {
-      try {
-        const response = await axios.get(
-          `https://api.github.com/repos/${company}/${repo}/issues/${issueId}`
-        );
-        setIssue(response.data);
-
-        setLoading(false);
-        console.log(issue);
-      } catch (error) {
-        setError(error.message);
-        setLoading(false);
-      }
-    };
-
-    fetchIssues();
-    // eslint-disable-next-line
-  }, []);
+  const { issue, loading, error } = useFetchIssue(issueId);
 
   const { created_at } = issue;
   const currentTime = moment();
   const formattedDate = moment(created_at).from(currentTime);
 
   if (loading) {
-    return (
-      <div className="spinner-container">
-        <BarLoader
-          css={css`
-            display: block;
-            margin: 0 auto;
-            border-color: red;
-          `}
-          size={15}
-          color={"#123abc"}
-          loading={loading}
-        />
-      </div>
-    );
+    return <Spinner />;
   }
 
   if (error) {
