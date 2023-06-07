@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import Pagination from "./Pagination";
 import useFetchIssues from "../../hook/useFetchIssues";
 import LoadingSpinner from "../spinner.js";
+import Label from "./label";
 
 const GitHubIssuesPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -61,22 +62,7 @@ const GitHubIssuesPage = () => {
                   <span className="hover:text-blue-700 ">
                     <Link to={`/issues/${issue.number}`}>{title}</Link>
                   </span>
-                  {issue.labels.map((label) => (
-                    <span
-                      className="ml-2 rounded-lg font-thin pl-1 pr-1 text-sm"
-                      key={label.id}
-                      style={{
-                        backgroundColor: `#${label.color}`,
-                        color:
-                          label.color === "9149d1" || label.color === "b60205"
-                            ? "white"
-                            : "inherit",
-                      }}
-                    >
-                      {" "}
-                      {label.name}{" "}
-                    </span>
-                  ))}
+                  <Label issue={issue} />
                 </p>
 
                 <p className="issueNumber lg:pl-7 text-gray-500">
